@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { userAppContext } from "../context/appContext";
+import { userAppContext } from "../context/AppContext.jsx";
 import { assets, dummyAddress } from "../assets/assets";
+import toast from "react-hot-toast";
+
 
 const Cart = () => {
   const {
@@ -11,34 +13,110 @@ const Cart = () => {
     getCartCount,
     updateCardItem,
     navigate,
-    getCartAmount
+    getCartAmount, axios , User , setCardItem
   } = userAppContext();
 
   const [cartArray, setCartArray] = useState([]);
-  const [addresses, setAddresses] = useState(dummyAddress);
+  const [addresses, setAddresses] = useState([]);
   const [showAddress, setShowAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState("COD");
+const getCart = () => {
+  if (!products || !cardItems) return; // Defensive check
 
-  const getCart = () => {
-    let tempArray = [];
-    for (const key in cardItems) {
-      const product = products.find((item) => item._id === key);
-      if (product) {
-        product.quantity =cardItems[key];
-        tempArray.push(product);
-      }
+  let tempArray = [];
+  for (const key in cardItems) {
+    const foundProduct = products.find((item) => item._id === key);
+    if (foundProduct) {
+      const productWithQty = { ...foundProduct, quantity: cardItems[key] }; // clone + add quantity
+      tempArray.push(productWithQty);
     }
-    setCartArray(tempArray);
-  };
+  }
+  setCartArray(tempArray);
+};
+  const getUserAddress = async ()=>{
+    try {
+      const { data} = await  axios.get('http://localhost:4000/api/address/get')
+      if(!data.success){
+        toast.error(data.error)
+       }else{
+        setAddresses(data.addresses)
+        if(data.addresses.length >0){
+          setSelectedAddress(data.addresses[0])
+        }
+       }
+    } catch (error) {
+      toast.error(error.message)
+      
+    }
+  }
+  useEffect(()=>{
+    if(User){
+      getUserAddress()
+    }
+  },[User])
+const placeOrder = async () => {
+  try {
+    if (!selectedAddress) {
+      return toast.error("Please select an address");
+    }
+if(paymentOption=="COD"){
+    const orderData = {
+      userId: User._id,
+      items: cartArray.map(item => ({
+        product: item._id,
+        quantity: item.quantity
+      })),
+      address: selectedAddress._id  // ✅ fixed key name
+    };
 
-  const placeOrder = async () => {
-    // Place order logic here
-    console.log("Placing order...");
-  };
+    const { data } = await axios.post('http://localhost:4000/api/order/cod', orderData);
+
+    if (data.success) {
+      toast.success(data.message);
+      setCardItem({})
+      navigate('/my-order')
+      
+      // You can also navigate or clear cart here if needed
+    } else {
+      toast.error(data.message || "Failed to place order");
+    }}else{
+      // place order with stripe 
+      const orderData = {
+      userId: User._id,
+      items: cartArray.map(item => ({
+        product: item._id,
+        quantity: item.quantity
+      })),
+      address: selectedAddress._id  // ✅ fixed key name
+    };
+
+    const { data } = await axios.post('http://localhost:4000/api/order/stripe', orderData);
+
+    if (data.success) {
+     window.location.replace(data.url)
+      navigate('/my-order')
+      
+      // You can also navigate or clear cart here if needed
+    } else {
+      toast.error(data.message || "Failed to place order");
+    }}
+
+      
+
+
+
+    }
+
+   catch (error) {
+    console.error(error);
+    toast.error(error.message || "Something went wrong");
+  }
+};
+
 
   useEffect(() => {
-    if (products.length > 0 &&cardItems) {
+    if (products.length > 0 && cardItems) {
       getCart();
     }
   }, [products,cardItems]);

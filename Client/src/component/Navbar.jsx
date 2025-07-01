@@ -2,15 +2,30 @@
 import React, { useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { userAppContext } from '../context/appContext'
+import { userAppContext } from '../context/AppContext.jsx'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 function Navbar ()  {
      const [open, setOpen] = React.useState(false)
      const {User, setUser, setShowUserLogin,searchQuery, setSearchQuery,getCartCount} = userAppContext();
 
      const logout = async ()=>{
-        setUser(null);
-        navigate('/')
+        try {
+            const {data} = await axios.get('http://localhost:4000/api/user/logout')
+            if(data.success){
+                toast.success("Logout Sucess")
+                 setUser(null);
+                      navigate('/')
+            }
+            else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+            
+        }
+       
      }
      const navigate = useNavigate();
      useEffect(()=>{
@@ -29,9 +44,9 @@ function Navbar ()  {
 
             {/* Desktop Menu */}
             <div className="hidden sm:flex items-center gap-8">
-                <NavLink to='./home'>Home</NavLink>
+                <NavLink to='./'>Home</NavLink>
                 <NavLink to='./products'>All Product</NavLink>
-                <NavLink to='./home'>Contact</NavLink>
+                <NavLink to='*'>Contact</NavLink>
 
                 <div onClick={()=>{}} className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
                     <input onChange={(e)=>setSearchQuery(e.target.value)} className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
@@ -54,9 +69,7 @@ function Navbar ()  {
                             navigate("my-order")
                         }} 
                         className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>My Order</li>
-                        <li onClick={()=>{
-                            navigate("Logout")
-                        }}
+                        <li  onClick={logout}
                         className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>Logout</li>
                     </ul>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { assets } from "../assets/assets";
-import { userAppContext } from "../context/appContext";
+import { userAppContext } from "../context/AppContext.jsx";
 
 const ProductCard = ({ product }) => {
   const { currency, addToCard, updateCardItem, removeFromCart, cardItems, navigate } = userAppContext();
@@ -8,7 +8,8 @@ const ProductCard = ({ product }) => {
   // ⛔️ Handle missing or broken product data
   if (!product || !product._id || !product.image || !product.image[0]) return null;
 
-  const count = cardItems[product._id] || 0;
+const count = (cardItems && cardItems[product._id]) || 0;
+
 
   const handleAdd = () => addToCard(product._id);
   const handleIncrement = () => updateCardItem(product._id, count + 1);
@@ -56,7 +57,7 @@ const ProductCard = ({ product }) => {
             e.stopPropagation();
 
           }} className="text-primary">
-            {!cardItems[product._id]? (
+            {!cardItems?.[product._id] ?(
               <button
                 className="flex items-center justify-center gap-1 bg-primary/10 border border-primary/40 md:w-[80px] w-[64px] h-[34px] rounded text-primary "
                 onClick={()=>{addToCard(product._id)}}

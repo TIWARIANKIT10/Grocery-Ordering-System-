@@ -2,25 +2,77 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyProducts } from "../assets/assets";
 import toast from "react-hot-toast";
+import axios from 'axios';
 
 
 export const AppContext = createContext();
+
+
+axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.withCredentials = true;
 
 
 export const AppContextProvider = ({ children }) => {
   const currency = import.meta.VITE_CURRENCY;
   const navigate = useNavigate();
   const [User, setUser] = useState(false);
-  const [isSeller, setisseller] = useState(false);
+  const [isSeller, setisseller] = useState();
   const [showUserLogin , setShowUserLogin] = useState(false);
   const [products, setProducts] = useState([]);
   const [cardItems, setCardItem] = useState({});
   const [searchQuery, setSearchQuery] = useState({});
 
 
+  //fetch seller status
+  const fetchSeller = async ()=>{
+    try {
+      const {data} = await axios.get('http://localhost:4000/api/seller/is-auth')
+      if(data.success){
+        setisseller(true)
+      }
+      else{
+        setisseller(false)
+      }
+    } catch (error) {
+      setisseller(false);
+
+      
+    }
+  }
+  //fetch user status , user data and cart items 
+  const fetchUser = async ()=>{
+  try {
+    const {data} = await axios.get('http://localhost:4000/api/user/is-auth');
+    if(data.success){
+      setUser(data.user)
+    setCardItem(data.user.cardItems || {});
+
+    }
+  } catch (error) {
+    setUser(null)
+    
+  }
+  }
+
   // Fetch all Product
   const fetchProducts = async()=>{
-    setProducts(dummyProducts)
+    try {
+      const response  = await axios.get('http://localhost:4000/api/product/list')
+      const data = response.data;
+     
+      if(data.success){
+        setProducts(data.products)
+     
+      }
+      else{
+        toast.error(data.message)
+      }
+      
+    } catch (error) {
+       toast.error(error.message)
+      
+    }
+   
   }
 
   //add product to cart 
@@ -63,7 +115,33 @@ const removeFromCart = (itemId) => {
 
   useEffect(()=>{
     fetchProducts()
+    fetchSeller()
+    fetchProducts()
+    fetchUser()
   },[])
+
+  useEffect(() => {
+  const updateCart = async ()=>{
+    try {
+      console.log(cardItems)
+      const { data } = await axios.post('http://localhost:4000/api/cart/update', {cardItems});
+     
+      if (!data.success) {
+        toast.error(data.message);
+        
+      }
+      console.log(data.success+"hh")
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  if (User) {
+    updateCart(); // ✅ only called once, conditionally
+  }
+}, [cardItems,User]); // 🔁 Also include `User` as dependency
+
+ 
   //totalcartamount
   const getCartCount = ()=>{
     let totalCount = 0;
@@ -91,7 +169,7 @@ const removeFromCart = (itemId) => {
 
 
 
-  const value = {navigate, User, setUser, isSeller, setisseller, showUserLogin, setShowUserLogin ,products,setProducts,currency, addToCard ,updateCardItem,removeFromCart,cardItems,searchQuery, setSearchQuery,getCartAmount,getCartCount};
+  const value = {navigate,axios, fetchProducts,User, setUser, isSeller, setisseller, showUserLogin, setShowUserLogin ,products,setProducts,currency, addToCard ,updateCardItem,removeFromCart,cardItems,searchQuery, setSearchQuery,getCartAmount,getCartCount,setCardItem};
 
   // ✅ Fixed: use AppContext.Provider here
   return (

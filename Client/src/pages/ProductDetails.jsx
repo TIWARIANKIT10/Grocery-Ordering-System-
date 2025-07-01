@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom"; // ✅ Missing import
-import { userAppContext } from "../context/appContext";
+import { userAppContext } from "../context/AppContext.jsx";
 import { assets } from "../assets/assets";
 import ProductCard from "../component/ProductCard";
 

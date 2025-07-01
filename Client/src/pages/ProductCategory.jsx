@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom'; // ✅ Missing import
-import { userAppContext } from '../context/appContext';
+import { userAppContext } from '../context/AppContext.jsx';
 import { categories } from '../assets/assets';
 import ProductCard from '../component/ProductCard'; // ✅ Assuming you want to display product cards
 
