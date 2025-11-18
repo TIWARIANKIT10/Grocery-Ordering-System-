@@ -8,11 +8,11 @@ import toast from 'react-hot-toast'
 
 function Navbar ()  {
      const [open, setOpen] = React.useState(false)
-     const {User, setUser, setShowUserLogin,searchQuery, setSearchQuery,getCartCount} = userAppContext();
+     const {User, setUser,api, setShowUserLogin,searchQuery, setSearchQuery,getCartCount} = userAppContext();
 
      const logout = async ()=>{
         try {
-            const {data} = await axios.get('http://localhost:4000/api/user/logout')
+            const {data} = await api.get('http://localhost:4000/api/user/logout')
             if(data.success){
                 toast.success("Logout Sucess")
                  setUser(null);

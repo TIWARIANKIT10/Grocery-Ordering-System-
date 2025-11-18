@@ -18,7 +18,7 @@ const InputField = ({ type, placeholder, name, handleChange, value }) => (
 );
 
 const AddAddress = () => {
-  const {axios ,User, navigate} = userAppContext()
+  const {axios ,User, navigate,api} = userAppContext()
   const [address, setAddress] = useState({
     firstName: '',
     lastName: '',
@@ -40,7 +40,7 @@ const AddAddress = () => {
     e.preventDefault();
   try {
    
-    const {data} = await axios.post('http://localhost:4000/api/address/add',{address})
+    const {data} = await api.post('/api/address/add',{address})
 console.log(data);
     if(data.success){
       toast.success(data.message)

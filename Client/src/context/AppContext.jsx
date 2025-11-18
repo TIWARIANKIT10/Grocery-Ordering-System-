@@ -7,9 +7,11 @@ import axios from 'axios';
 
 export const AppContext = createContext();
 
+const api = axios.create({
+  baseURL:import.meta.env.VITE_BACKEND_URL ,
+  withCredentials:true
+})
 
-axios.defaults.baseURL = 'http://localhost:4000';
-axios.defaults.withCredentials = true;
 
 
 export const AppContextProvider = ({ children }) => {
@@ -26,7 +28,7 @@ export const AppContextProvider = ({ children }) => {
   //fetch seller status
   const fetchSeller = async ()=>{
     try {
-      const {data} = await axios.get('http://localhost:4000/api/seller/is-auth')
+      const {data} = await api.get('http://localhost:4000/api/seller/is-auth')
       if(data.success){
         setisseller(true)
       }
@@ -42,7 +44,7 @@ export const AppContextProvider = ({ children }) => {
   //fetch user status , user data and cart items 
   const fetchUser = async ()=>{
   try {
-    const {data} = await axios.get('http://localhost:4000/api/user/is-auth');
+    const {data} = await api.get('http://localhost:4000/api/user/is-auth');
     if(data.success){
       setUser(data.user)
     setCardItem(data.user.cardItems || {});
@@ -57,7 +59,7 @@ export const AppContextProvider = ({ children }) => {
   // Fetch all Product
   const fetchProducts = async()=>{
     try {
-      const response  = await axios.get('http://localhost:4000/api/product/list')
+      const response  = await api.get('http://localhost:4000/api/product/list')
       const data = response.data;
      
       if(data.success){
@@ -124,7 +126,7 @@ const removeFromCart = (itemId) => {
   const updateCart = async ()=>{
     try {
       console.log(cardItems)
-      const { data } = await axios.post('http://localhost:4000/api/cart/update', {cardItems});
+      const { data } = await api.post('http://localhost:4000/api/cart/update', {cardItems});
      
       if (!data.success) {
         toast.error(data.message);
@@ -169,7 +171,7 @@ const removeFromCart = (itemId) => {
 
 
 
-  const value = {navigate,axios, fetchProducts,User, setUser, isSeller, setisseller, showUserLogin, setShowUserLogin ,products,setProducts,currency, addToCard ,updateCardItem,removeFromCart,cardItems,searchQuery, setSearchQuery,getCartAmount,getCartCount,setCardItem};
+  const value = {api,navigate,axios, fetchProducts,User, setUser, isSeller, setisseller, showUserLogin, setShowUserLogin ,products,setProducts,currency, addToCard ,updateCardItem,removeFromCart,cardItems,searchQuery, setSearchQuery,getCartAmount,getCartCount,setCardItem};
 
   // ✅ Fixed: use AppContext.Provider here
   return (

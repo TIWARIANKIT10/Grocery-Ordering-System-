@@ -5,10 +5,10 @@ import { userAppContext } from "../context/AppContext.jsx";
 
 const MyOrder = () => {
   const [myOrders,setMyOrders] = useState([])
-  const {axios,User,currency} = userAppContext();
+  const {axios,User,currency,api} = userAppContext();
   const fetchMyOrder = async ()=> { 
     try {
-      const { data} = await axios.get('http://localhost:4000/api/order/user')
+      const { data} = await api.get('/api/order/user')
       console.log(data )
 
       

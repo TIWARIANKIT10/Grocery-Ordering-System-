@@ -4,12 +4,12 @@ import { assets, dummyOrders } from '../../assets/assets';
 import toast from 'react-hot-toast';
 
 const Orders = () => {
-    const {currency,axios} = userAppContext();
+    const {currency,axios,api} = userAppContext();
     const [orders, setOrders] = useState([]);
 
     const fetchOrders = async ()=>{
         try {
-            const { data } = await axios.get('http://localhost:4000/api/order/seller');
+            const { data } = await api.get('/api/order/seller');
             console.log("Response:", data);
 
             if(data.success){

@@ -4,7 +4,7 @@ import { userAppContext } from '../../context/AppContext.jsx';
 import toast from 'react-hot-toast';
 
 const AddProduct = () => {
-  const { setisseller,axios,navigate } = userAppContext();
+  const { setisseller,axios,navigate ,api} = userAppContext();
     const[files,setFiles] = useState([]);
     const [name, setName] = useState('');
     const [description,setDescription] = useState('');
@@ -30,7 +30,7 @@ const AddProduct = () => {
               for(let i = 0 ; i<files.length; i++){
                 formdata.append('images',files[i])
               }
-              const {data} = await axios.post('http://localhost:4000/api/product/add',formdata)
+              const {data} = await api.post('/api/product/add',formdata)
 
               if(data.success){
                 toast.success(data.message);

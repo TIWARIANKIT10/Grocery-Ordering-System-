@@ -13,7 +13,7 @@ const Cart = () => {
     getCartCount,
     updateCardItem,
     navigate,
-    getCartAmount, axios , User , setCardItem
+    getCartAmount, axios , User , setCardItem,api
   } = userAppContext();
 
   const [cartArray, setCartArray] = useState([]);
@@ -36,7 +36,7 @@ const getCart = () => {
 };
   const getUserAddress = async ()=>{
     try {
-      const { data} = await  axios.get('http://localhost:4000/api/address/get')
+      const { data} = await  api.get('/api/address/get')
       if(!data.success){
         toast.error(data.error)
        }else{
@@ -70,7 +70,7 @@ if(paymentOption=="COD"){
       address: selectedAddress._id  // ✅ fixed key name
     };
 
-    const { data } = await axios.post('http://localhost:4000/api/order/cod', orderData);
+    const { data } = await api.post('/api/order/cod', orderData);
 
     if (data.success) {
       toast.success(data.message);

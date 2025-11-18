@@ -3,10 +3,10 @@ import { userAppContext } from '../../context/AppContext.jsx'
 import toast from 'react-hot-toast'
 
 const ProductList = () => {
-    const {products,currency,fetchProducts,axios } = userAppContext()
+    const {products,currency,fetchProducts,axios,api } = userAppContext()
     const toggleStock = async (id, inStock)=>{
         try {
-            const {data} = await axios.post('http://localhost:4000/api/product/stock',{id,inStock})
+            const {data} = await api.post('/api/product/stock',{id,inStock})
             if(data.success){
                 fetchProducts();
                 toast.success(data.message)
