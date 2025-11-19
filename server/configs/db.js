@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const connnectDB = async()=>{
     try{
         mongoose.connection.on('connected',()=> console.log("Database Connected"));
-        await mongoose.connect(`mongodb+srv://bcsitexample:DBispKXcF5LcZvgF@cluster0.idzn2hw.mongodb.net/greencart`)
+        await mongoose.connect(process.env.MONDODB_URL)
     }
     catch(error){
         console.error(error.message);
