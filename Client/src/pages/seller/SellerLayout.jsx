@@ -43,15 +43,15 @@ const SellerLayout = () => {
       </div>
 
       {/* Sidebar + Main Content */}
-      <div className="flex">
-        <div className="md:w-64 w-16 border-r h-[98vh] text-base border-gray-300 pt-4 flex flex-col">
+      <div className="flex flex-col md:flex-row">
+        <div className="md:w-64 w-full md:min-h-[calc(100vh-68px)] border-r text-base border-gray-300 pt-2 md:pt-4 flex md:flex-col overflow-x-auto md:overflow-visible">
           {sidebarLinks.map((item, index) => (
             <NavLink
               to={item.path}
               key={index}
               end={item.path === "/seller"}
               className={({ isActive }) =>
-                `flex items-center py-3 px-4 gap-3 ${
+                `flex items-center py-3 px-4 gap-3 shrink-0 ${
                   isActive
                     ? "border-r-4 md:border-r-[6px] bg-indigo-500/10 border-indigo-500 text-indigo-500"
                     : "hover:bg-gray-100/90 border-white"
@@ -59,13 +59,13 @@ const SellerLayout = () => {
               }
             >
               <img src={item.icon} alt={item.name} className="w-7 h-7" />
-              <p className="md:block hidden text-center">{item.name}</p>
+              <p className="text-center whitespace-nowrap">{item.name}</p>
             </NavLink>
           ))}
         </div>
 
         {/* Main content goes here */}
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-3 sm:p-4">
           <Outlet />
         </div>
       </div>

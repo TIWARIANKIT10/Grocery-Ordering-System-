@@ -24,12 +24,12 @@ function App() {
     const isSellerPath = useLocation().pathname.includes("seller");
     const{showUserLogin,isSeller} = userAppContext()
   return (
-    <div className='text-default min-h-screen text-gray-700 bg-white'>
+    <div className='text-default min-h-screen text-gray-700 bg-white overflow-x-hidden'>
         {isSellerPath? null:  <Navbar/> }
         {showUserLogin?<Login/>:null}
         <Toaster/>
      
-    <div className={`${isSellerPath}?"":"px-6 md:px-16 lg:px_24 xl:px-32"`}>
+   <div className={isSellerPath ? "" : "mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24"}>
    <Routes>
     <Route path='/' element={<Home/>}/>
     <Route path='/products/' element={<AllProducts/>}/>

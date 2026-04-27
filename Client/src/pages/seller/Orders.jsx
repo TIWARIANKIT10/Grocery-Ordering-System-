@@ -27,13 +27,13 @@ const Orders = () => {
     }
     useEffect(()=>{fetchOrders()},[])
   return (
-       <div className='no-scrolbar flex-1 h-[95vh] overflow-y-scroll'>
+       <div className='no-scrollbar flex-1 md:h-[95vh] overflow-y-auto'>
   <div className="md:p-10 p-4 space-y-4">
  
             <h2 className="text-lg font-medium">Orders List</h2>
             {orders.map((order, index) => (
-                <div key={index} className="flex flex-col md:grid md:grid-cols-[2fr_1fr_1fr_1fr] md:items-center gap-5 p-5 max-w-4xl rounded-md border border-gray-300 text-gray-800">
-                    <div className="flex gap-5">
+                <div key={index} className="flex flex-col lg:grid lg:grid-cols-[2fr_1fr_1fr_1fr] lg:items-center gap-5 p-4 md:p-5 max-w-4xl rounded-md border border-gray-300 text-gray-800">
+                    <div className="flex gap-3 md:gap-5">
                         <img className="w-12 h-12 object-cover opacity-60" src={assets.box_icon} alt="boxIcon" />
                         <>
                             {order.items.map((item, index) => (
@@ -51,7 +51,7 @@ const Orders = () => {
                         <p>{order.address.street}, {order.address.city}, {order.address.state},{order.address.zipcode}, {order.address.country}</p>
                     </div>
 
-                    <p className="font-medium text-base my-auto text-black/70">${order.amount}</p>
+                    <p className="font-medium text-base my-auto text-black/70 break-words">${order.amount}</p>
 
                     <div className="flex flex-col text-sm">
                         <p>Method: {order.paymentType}</p>

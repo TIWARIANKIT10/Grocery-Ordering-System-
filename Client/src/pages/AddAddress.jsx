@@ -69,7 +69,7 @@ console.log(data);
           <form onSubmit={onSubmitHandler} className='space-y-4 mt-6 text-sm'>
 
             {/* First & Last Name */}
-            <div className='flex gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <InputField name='firstName' type='text' placeholder='First Name' value={address.firstName} handleChange={handleChange} />
               <InputField name='lastName' type='text' placeholder='Last Name' value={address.lastName} handleChange={handleChange} />
             </div>
@@ -81,13 +81,13 @@ console.log(data);
             <InputField name='street' type='text' placeholder='Street Address' value={address.street} handleChange={handleChange} />
 
             {/* City & State */}
-            <div className='flex gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <InputField name='city' type='text' placeholder='City' value={address.city} handleChange={handleChange} />
               <InputField name='state' type='text' placeholder='State' value={address.state} handleChange={handleChange} />
             </div>
 
             {/* Zip & Country */}
-            <div className='flex gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <InputField name='zipcode' type='text' placeholder='Zip Code' value={address.zipcode} handleChange={handleChange} />
               <InputField name='country' type='text' placeholder='Country' value={address.country} handleChange={handleChange} />
             </div>
@@ -105,7 +105,7 @@ console.log(data);
         </div>
 
         <img
-          className='md:mr-16 mb-8 md:mb-0 max-w-xs'
+          className='md:mr-10 mb-8 md:mb-0 max-w-xs w-full mx-auto md:mx-0'
           src={assets.add_address_iamge}
           alt="Add Address"
         />

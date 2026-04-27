@@ -37,7 +37,7 @@ import toast from 'react-hot-toast';
   return !isSeller && (
     <form action="" onSubmit={onSubmitHandler} className='min-h-screen flex items-center text-sm text-gray-600'>
 
-        <div className="flex flex-col gap-5 m-auto items-start p-8 py-12 min-w-80 sm:min-w-88 rounded-lg shadow-xl border border-gray-200">
+        <div className="flex flex-col gap-5 m-auto items-start p-6 sm:p-8 py-10 sm:py-12 w-full max-w-sm rounded-lg shadow-xl border border-gray-200">
     <p className="text-2xl font-medium m-auto">
         <span className="text-primary">Seller</span> Login
     </p>

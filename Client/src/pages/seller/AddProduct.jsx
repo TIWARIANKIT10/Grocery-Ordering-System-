@@ -53,8 +53,8 @@ const AddProduct = () => {
           }
     
   return (
-   <div className="no-scroolbar flex-1 h-[95vh] overflow-y-scroll flex flex-col justify-between">
-            <form onSubmit={onSubmitHandler} className="md:p-10 p-4 space-y-5 max-w-lg">
+   <div className="no-scrollbar flex-1 md:h-[95vh] overflow-y-auto flex flex-col justify-between">
+            <form onSubmit={onSubmitHandler} className="md:p-10 p-4 space-y-5 max-w-lg w-full">
                 <div>
                     <p className="text-base font-medium">Product Image</p>
                     <div className="flex flex-wrap items-center gap-3 mt-2">

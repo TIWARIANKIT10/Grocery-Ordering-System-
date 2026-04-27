@@ -122,26 +122,82 @@ if(paymentOption=="COD"){
   }, [products,cardItems]);
 
   return products.length > 0 &&cardItems ? (
-    <div className="flex flex-col md:flex-row mt-16">
+    <div className="flex flex-col lg:flex-row gap-8 mt-10 md:mt-16">
       {/* Left Cart Items Section */}
-      <div className="flex-1 max-w-4xl">
-        <h1 className="text-3xl font-medium mb-6">
+      <div className="flex-1 min-w-0">
+        <h1 className="text-2xl md:text-3xl font-medium mb-6">
           Shopping Cart{" "}
           <span className="text-sm text-indigo-500">{getCartCount()} Items</span>
         </h1>
 
-        <div className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3">
+        <div className="hidden md:grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3">
           <p className="text-left">Product Details</p>
           <p className="text-center">Subtotal</p>
           <p className="text-center">Action</p>
         </div>
 
         {cartArray.map((product, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
-          >
-            <div className="flex items-center md:gap-6 gap-3">
+          <div key={index} className="pt-3 border-b border-gray-200 pb-3">
+            <div className="hidden md:grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium">
+              <div className="flex items-center md:gap-6 gap-3">
+                <div
+                  onClick={() => {
+                    navigate(
+                      `/products/${product.category.toLowerCase()}/${product._id}`
+                    );
+                    scrollTo(0, 0);
+                  }}
+                  className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded"
+                >
+                  <img
+                    className="max-w-full h-full object-cover"
+                    src={product.image[0]}
+                    alt={product.name}
+                  />
+                </div>
+                <div>
+                  <p className="font-semibold">{product.name}</p>
+                  <div className="font-normal text-gray-500/70">
+                    <p>Weight: <span>{product.weight || "N/A"}</span></p>
+                    <div className="flex items-center">
+                      <p>Qty:</p>
+                      <select
+                        className="outline-none ml-1"
+                        value={cardItems[product._id]}
+                        onChange={(e) =>
+                          updateCardItem(product._id, parseInt(e.target.value))
+                        }
+                      >
+                        {Array.from(
+                          { length: Math.max(cardItems[product._id], 9) },
+                          (_, index) => (
+                            <option key={index} value={index + 1}>
+                              {index + 1}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p className="text-center">
+                {currency}
+                {product.offerPrice * product.quantity}
+              </p>
+              <button
+                onClick={() => removeFromCart(product._id)}
+                className="cursor-pointer mx-auto"
+              >
+                <img
+                  src={assets.remove_icon}
+                  alt="Remove"
+                  className="inline-block w-6 h-6"
+                />
+              </button>
+            </div>
+
+            <div className="md:hidden flex gap-3 text-sm text-gray-600">
               <div
                 onClick={() => {
                   navigate(
@@ -149,7 +205,7 @@ if(paymentOption=="COD"){
                   );
                   scrollTo(0, 0);
                 }}
-                className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded"
+                className="cursor-pointer w-20 h-20 shrink-0 flex items-center justify-center border border-gray-300 rounded"
               >
                 <img
                   className="max-w-full h-full object-cover"
@@ -157,14 +213,18 @@ if(paymentOption=="COD"){
                   alt={product.name}
                 />
               </div>
-              <div>
-                <p className="hidden md:block font-semibold">{product.name}</p>
-                <div className="font-normal text-gray-500/70">
-                  <p>Weight: <span>{product.weight || "N/A"}</span></p>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-800 truncate">{product.name}</p>
+                <p className="text-gray-500">Weight: {product.weight || "N/A"}</p>
+                <p className="font-medium text-gray-800 mt-1">
+                  {currency}
+                  {product.offerPrice * product.quantity}
+                </p>
+                <div className="flex items-center justify-between mt-2">
                   <div className="flex items-center">
                     <p>Qty:</p>
                     <select
-                      className="outline-none ml-1"
+                      className="outline-none ml-1 bg-transparent"
                       value={cardItems[product._id]}
                       onChange={(e) =>
                         updateCardItem(product._id, parseInt(e.target.value))
@@ -180,23 +240,19 @@ if(paymentOption=="COD"){
                       )}
                     </select>
                   </div>
+                  <button
+                    onClick={() => removeFromCart(product._id)}
+                    className="cursor-pointer"
+                  >
+                    <img
+                      src={assets.remove_icon}
+                      alt="Remove"
+                      className="inline-block w-5 h-5"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
-            <p className="text-center">
-              {currency}
-              {product.offerPrice * product.quantity}
-            </p>
-            <button
-              onClick={() => removeFromCart(product._id)}
-              className="cursor-pointer mx-auto"
-            >
-              <img
-                src={assets.remove_icon}
-                alt="Remove"
-                className="inline-block w-6 h-6"
-              />
-            </button>
           </div>
         ))}
 
@@ -217,21 +273,21 @@ if(paymentOption=="COD"){
       </div>
 
       {/* Right Summary Section */}
-      <div className="max-w-[360px] w-full bg-gray-100/40 p-5 max-md:mt-16 border border-gray-300/70">
+      <div className="lg:max-w-[360px] w-full bg-gray-100/40 p-5 border border-gray-300/70 h-fit">
         <h2 className="text-xl md:text-xl font-medium">Order Summary</h2>
         <hr className="border-gray-300 my-5" />
 
         <div className="mb-6">
           <p className="text-sm font-medium uppercase">Delivery Address</p>
-          <div className="relative flex justify-between items-start mt-2">
-            <p className="text-gray-500">
+          <div className="relative mt-2">
+            <p className="text-gray-500 pr-16">
               {selectedAddress
                 ? `${selectedAddress.street}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.country}`
                 : "No address found"}
             </p>
             <button
               onClick={() => setShowAddress(!showAddress)}
-              className="text-indigo-500 hover:underline cursor-pointer"
+              className="text-indigo-500 hover:underline cursor-pointer absolute top-0 right-0"
             >
               Change
             </button>

@@ -7,14 +7,14 @@ import React from 'react'
             <p className="md:text-lg text-gray-500/70 pb-8">
                 Subscribe to get the latest offers, new arrivals, and exclusive discounts
             </p>
-            <form className="flex items-center justify-between max-w-2xl w-full md:h-13 h-12">
+            <form className="flex max-sm:flex-col items-center justify-between max-w-2xl w-full gap-3 md:h-13">
                 <input
-                    className="border border-gray-300 rounded-md h-full border-r-0 outline-none w-full rounded-r-none px-3 text-gray-500"
+                    className="border border-gray-300 rounded-md h-12 md:h-full md:border-r-0 outline-none w-full md:rounded-r-none px-3 text-gray-500"
                     type="text"
                     placeholder="Enter your email id"
                     required
                 />
-                <button type="submit" className="md:px-12 px-8 h-full text-white bg-primary hover:bg-primary transition-all cursor-pointer rounded-md rounded-l-none">
+                <button type="submit" className="md:px-12 px-8 h-12 md:h-full w-full sm:w-auto text-white bg-primary hover:bg-primary transition-all cursor-pointer rounded-md md:rounded-l-none">
                     Subscribe
                 </button>
             </form>

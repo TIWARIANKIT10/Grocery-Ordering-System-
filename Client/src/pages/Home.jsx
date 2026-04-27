@@ -9,7 +9,7 @@ import NewsLetter from '../component/NewsLetter'
 
 export const Home = () => {
   return (
-    <div className='mt-10'>
+    <div className='mt-6'>
         <MainBanner/>
         <Categories/>
         <BestSeller/>

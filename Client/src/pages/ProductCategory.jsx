@@ -19,7 +19,7 @@ const ProductCategory = () => {
   return (
     <div className='mt-16'>
       {searchCategory && (
-        <div className='flex flex-col items-end w-max'>
+        <div className='flex flex-col items-end w-fit'>
           <p className='text-2xl font-medium'>{searchCategory.text.toUpperCase()}</p>
           <div className='w-16 h-0.5 bg-primary rounded-full'></div>
         </div>
@@ -37,6 +37,5 @@ const ProductCategory = () => {
 };
 
 export default ProductCategory;
-
 
 

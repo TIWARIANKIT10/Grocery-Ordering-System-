@@ -23,14 +23,14 @@ const count = (cardItems && cardItems[product._id]) || 0;
 
   return (
     <div
-  className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-56 w-full"
+  className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white w-full min-w-0"
   onClick={() => {
     navigate(`/products/${product.category.toLowerCase()}/${product._id}`);
     scrollTo(0, 0);
   }}
 >
-      <div className="group cursor-pointer flex items-center justify-center px-2">
-        <img className="group-hover:scale-105 transition max-w-26 md:max-w-36" src={product.image[0]} alt={product.name} />
+      <div className="group cursor-pointer flex items-center justify-center px-2 h-28 sm:h-32 md:h-36">
+        <img className="group-hover:scale-105 transition max-h-full w-auto object-contain" src={product.image[0]} alt={product.name} />
       </div>
       <div className="text-gray-500/60 text-sm">
         <p>{product.category}</p>
@@ -49,7 +49,7 @@ const count = (cardItems && cardItems[product._id]) || 0;
           <p>({4})</p>
         </div>
         <div className="flex items-end justify-between mt-3">
-          <p className="md:text-xl text-base font-medium text-primary">
+          <p className="md:text-xl text-base font-medium text-primary leading-tight">
             {currency} ${product.offerPrice}{" "}
             <span className="text-gray-500/60 md:text-sm text-xs line-through">${product.price}</span>
           </p>

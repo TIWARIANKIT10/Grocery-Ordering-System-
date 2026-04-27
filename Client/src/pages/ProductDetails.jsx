@@ -5,7 +5,7 @@ import { assets } from "../assets/assets";
 import ProductCard from "../component/ProductCard";
 
 const ProductDetails = () => {
-  const { products, navigate, currency, addToCart } = userAppContext();
+  const { products, navigate, currency, addToCard } = userAppContext();
   const { id } = useParams();
 
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -28,34 +28,34 @@ const ProductDetails = () => {
 
   return (
     <div className="mt-16">
-      <p>
+      <p className="text-sm md:text-base break-words">
         <Link to="/">Home</Link> /{" "}
         <Link to="/products">Products</Link> /{" "}
         <Link to={`/products/${product.category.toLowerCase()}`}>{product.category}</Link> /{" "}
         <span className="text-indigo-500">{product.name}</span>
       </p>
 
-      <div className="flex flex-col md:flex-row gap-16 mt-4">
-        <div className="flex gap-3">
-          <div className="flex flex-col gap-3">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-4">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 w-full lg:w-auto">
+          <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible pb-1">
             {product.image.map((image, index) => (
               <div
                 key={index}
                 onClick={() => setThumbnail(image)}
-                className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer"
+                className="border w-16 h-16 sm:w-20 sm:h-20 border-gray-500/30 rounded overflow-hidden cursor-pointer shrink-0"
               >
-                <img src={image} alt={`Thumbnail ${index + 1}`} />
+                <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
 
-          <div className="border border-gray-500/30 max-w-100 rounded overflow-hidden">
-            <img src={thumbnail} alt="Selected product" />
+          <div className="border border-gray-500/30 w-full sm:max-w-[28rem] rounded overflow-hidden">
+            <img src={thumbnail} alt="Selected product" className="w-full h-auto object-cover" />
           </div>
         </div>
 
-        <div className="text-sm w-full md:w-1/2">
-          <h1 className="text-3xl font-medium">{product.name}</h1>
+        <div className="text-sm w-full lg:w-1/2">
+          <h1 className="text-2xl md:text-3xl font-medium">{product.name}</h1>
 
           <div className="flex items-center gap-0.5 mt-1">
             {Array(5)
@@ -84,16 +84,16 @@ const ProductDetails = () => {
             ))}
           </ul>
 
-          <div className="flex items-center mt-10 gap-4 text-base">
+          <div className="flex flex-col sm:flex-row items-center mt-8 gap-3 sm:gap-4 text-base">
             <button
-              onClick={() => addToCart(product._id)}
+              onClick={() => addToCard(product._id)}
               className="w-full py-3.5 cursor-pointer font-medium bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition"
             >
               Add to Cart
             </button>
             <button
               onClick={() => {
-                addToCart(product._id);
+                addToCard(product._id);
                 navigate("/cart");
               }}
               className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition"
@@ -104,7 +104,7 @@ const ProductDetails = () => {
         </div>
       </div>
       <div className="flex flex-col items-center mt-20">
-  <div className="flex flex-col items-center w-max">
+  <div className="flex flex-col items-center w-fit">
     <p className="text-3xl font-medium">Related Products</p>
     <div className="w-20 h-0.5 bg-primary rounded-full mt-2"></div>
   </div>

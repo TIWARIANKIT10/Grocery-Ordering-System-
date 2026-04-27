@@ -28,28 +28,27 @@ const MyOrder = () => {
     fetchMyOrder()}
   },[User])
   return (
-    <div className="mt-16 px-4">
-      <h1 className="text-2xl font-semibold mb-8 border-b pb-2 w-max">
+    <div className="mt-10 md:mt-16">
+      <h1 className="text-2xl font-semibold mb-8 border-b pb-2 w-fit">
         MY ORDERS
       </h1>
 
       {myOrders.map((order, index) => (
         <div
           key={index}
-          className="border border-gray-300 rounded-lg p-4 mb-6 shadow-sm max-w-4xl"
+          className="border border-gray-300 rounded-lg p-3 md:p-4 mb-6 shadow-sm w-full"
         > 
-          <p className="flex justify-between md:items-center text-gray-400 md:font-medium max-md:flex-col">
+          <p className="flex justify-between md:items-center text-gray-400 md:font-medium max-md:flex-col gap-1">
             <span>OrderId : {order._id}</span>
             <span>Payment : {order.paymentType}</span>
             <span>Total Amount : {currency}{order.amount}</span>
           </p>
-<p>hellow</p>
           {order.items.map((item, idx) => (
             <div
               key={idx}
               className={`relative bg-white text-gray-500/70 ${
                 order.items.length !== idx + 1 ? "border-b" : ""
-              } border-gray-300 flex flex-col md:flex-row md:items-center justify-between p-4 py-5 md:gap-16 w-full max-w-4xl`}
+              } border-gray-300 flex flex-col md:flex-row md:items-center justify-between p-3 md:p-4 py-5 gap-4 md:gap-8 w-full`}
             >
               <div className="flex items-center mb-4 md:mb-0">
                 <div className="bg-primary/10 p-4 rounded-lg">
@@ -60,7 +59,7 @@ const MyOrder = () => {
                   />
                 </div>
                 <div className="ml-4">
-                  <h2 className="text-xl font-medium text-gray-800">
+                  <h2 className="text-lg md:text-xl font-medium text-gray-800">
                     {item?.product?.name || "Unknown Product"}
                   </h2>
                   <p>Category: {item?.product?.category || "N/A"}</p>
