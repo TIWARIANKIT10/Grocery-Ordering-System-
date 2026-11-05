@@ -5,11 +5,11 @@ const Footer  = () => {
     
 
     return (
-        <div className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 mt-16 md:mt-24 bg-primary/10">
+        <div id="contact" className="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 mt-16 md:mt-24 bg-primary/10">
             <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b border-gray-500/30 text-gray-500">
                 <div>
-                    <img className="w-34 md:w-32" src={assets.logo} alt="dummyLogoColored" />
-                    <p className="max-w-[410px] mt-6">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque incidunt totam, sunt aut dolore a magnam quisquam adipisci nam dolorem.
+                    <img className="w-34 md:w-32" src={assets.logo} alt="Grocery Ordering System logo" />
+                    <p className="max-w-[410px] mt-6">Fresh groceries delivered to your door. Shop everyday essentials, fresh produce, dairy, snacks and household items at honest prices, and get them delivered fast.
                     </p>
                 </div>
                 <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5">

@@ -30,7 +30,7 @@ const count = (cardItems && cardItems[product._id]) || 0;
   }}
 >
       <div className="group cursor-pointer flex items-center justify-center px-2 h-28 sm:h-32 md:h-36">
-        <img className="group-hover:scale-105 transition max-h-full w-auto object-contain" src={product.image[0]} alt={product.name} />
+        <img loading="lazy" className="group-hover:scale-105 transition max-h-full w-auto object-contain" src={product.image[0]} alt={product.name} />
       </div>
       <div className="text-gray-500/60 text-sm">
         <p>{product.category}</p>

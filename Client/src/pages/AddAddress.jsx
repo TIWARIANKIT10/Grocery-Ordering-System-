@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 // ✅ Reusable InputField component
 const InputField = ({ type, placeholder, name, handleChange, value }) => (
   <input
-    className='w-full px-3 py-2.5 border border-gray-300 rounded outline-none text-gray-600 focus:border-indigo-500 transition'
+    className='w-full px-3 py-2.5 border border-gray-300 rounded outline-none text-base text-gray-600 focus:border-indigo-500 transition'
     type={type}
     placeholder={placeholder}
     name={name}
@@ -66,7 +66,7 @@ console.log(data);
 
       <div className='flex flex-col-reverse md:flex-row justify-between mt-10 gap-8'>
         <div className='flex-1 max-w-xl'>
-          <form onSubmit={onSubmitHandler} className='space-y-4 mt-6 text-sm'>
+          <form onSubmit={onSubmitHandler} className='space-y-4 mt-6 text-base'>
 
             {/* First & Last Name */}
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>

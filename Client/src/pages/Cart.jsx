@@ -13,7 +13,7 @@ const Cart = () => {
     getCartCount,
     updateCardItem,
     navigate,
-    getCartAmount, axios , User , setCardItem,api
+    getCartAmount, User , setCardItem,api
   } = userAppContext();
 
   const [cartArray, setCartArray] = useState([]);
@@ -91,7 +91,7 @@ if(paymentOption=="COD"){
       address: selectedAddress._id  // ✅ fixed key name
     };
 
-    const { data } = await axios.post('http://localhost:4000/api/order/stripe', orderData);
+    const { data } = await api.post('/api/order/stripe', orderData);
 
     if (data.success) {
      window.location.replace(data.url)
@@ -162,7 +162,7 @@ if(paymentOption=="COD"){
                     <div className="flex items-center">
                       <p>Qty:</p>
                       <select
-                        className="outline-none ml-1"
+                        className="outline-none ml-1 text-base"
                         value={cardItems[product._id]}
                         onChange={(e) =>
                           updateCardItem(product._id, parseInt(e.target.value))
@@ -224,7 +224,7 @@ if(paymentOption=="COD"){
                   <div className="flex items-center">
                     <p>Qty:</p>
                     <select
-                      className="outline-none ml-1 bg-transparent"
+                      className="outline-none ml-1 bg-transparent text-base"
                       value={cardItems[product._id]}
                       onChange={(e) =>
                         updateCardItem(product._id, parseInt(e.target.value))
@@ -320,7 +320,7 @@ if(paymentOption=="COD"){
           <select
             value={paymentOption}
             onChange={(e) => setPaymentOption(e.target.value)}
-            className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none"
+            className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none text-base"
           >
             <option value="COD">Cash On Delivery</option>
             <option value="Online">Online Payment</option>

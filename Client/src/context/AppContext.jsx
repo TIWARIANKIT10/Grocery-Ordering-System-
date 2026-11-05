@@ -15,14 +15,14 @@ const api = axios.create({
 
 
 export const AppContextProvider = ({ children }) => {
-  const currency = import.meta.VITE_CURRENCY;
+  const currency = import.meta.env.VITE_CURRENCY;
   const navigate = useNavigate();
   const [User, setUser] = useState(false);
   const [isSeller, setisseller] = useState();
   const [showUserLogin , setShowUserLogin] = useState(false);
   const [products, setProducts] = useState([]);
   const [cardItems, setCardItem] = useState({});
-  const [searchQuery, setSearchQuery] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
 
 
   //fetch seller status
@@ -118,7 +118,6 @@ const removeFromCart = (itemId) => {
   useEffect(()=>{
     fetchProducts()
     fetchSeller()
-    fetchProducts()
     fetchUser()
   },[])
 
