@@ -1,4 +1,5 @@
 import React from 'react'
+import toast from 'react-hot-toast'
 
  const NewsLetter = ()=>{
   return (
@@ -7,10 +8,10 @@ import React from 'react'
             <p className="md:text-lg text-gray-500/70 pb-8">
                 Subscribe to get the latest offers, new arrivals, and exclusive discounts
             </p>
-            <form className="flex max-sm:flex-col items-center justify-between max-w-2xl w-full gap-3 md:h-13">
+            <form onSubmit={(e)=>{e.preventDefault(); toast.success("Subscribed — welcome to the deals list!"); e.currentTarget.reset();}} className="flex max-sm:flex-col items-center justify-between max-w-2xl w-full gap-3 md:h-13">
                 <input
                     className="border border-gray-300 rounded-md h-12 md:h-full md:border-r-0 outline-none w-full md:rounded-r-none px-3 text-base text-gray-500"
-                    type="text"
+                    type="email"
                     placeholder="Enter your email id"
                     required
                 />

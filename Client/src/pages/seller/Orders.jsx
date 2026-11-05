@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { userAppContext } from '../../context/AppContext.jsx'
-import { assets, dummyOrders } from '../../assets/assets';
+import { assets } from '../../assets/assets';
 import toast from 'react-hot-toast';
 
 const Orders = () => {
@@ -10,10 +10,8 @@ const Orders = () => {
     const fetchOrders = async ()=>{
         try {
             const { data } = await api.get('/api/order/seller');
-            console.log("Response:", data);
 
             if(data.success){
-                  console.log(data)
                 setOrders(data.orders)
             }else{
                 toast.error(data.message)
@@ -39,7 +37,7 @@ const Orders = () => {
                             {order.items.map((item, index) => (
                                 <div key={index} className="flex flex-col justify-center">
                                     <p className="font-medium">
-                                        {item.product.name} <span className="text-primary">x {item.quantity}</span>
+                                        {item.product?.name ?? "Deleted product"} <span className="text-primary">x {item.quantity}</span>
                                     </p>
                                 </div>
                             ))}
@@ -51,7 +49,7 @@ const Orders = () => {
                         <p>{order.address.street}, {order.address.city}, {order.address.state},{order.address.zipcode}, {order.address.country}</p>
                     </div>
 
-                    <p className="font-medium text-base my-auto text-black/70 break-words">${order.amount}</p>
+                    <p className="font-medium text-base my-auto text-black/70 break-words">{currency}{order.amount}</p>
 
                     <div className="flex flex-col text-sm">
                         <p>Method: {order.paymentType}</p>

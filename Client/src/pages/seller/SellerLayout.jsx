@@ -14,9 +14,10 @@ const SellerLayout = () => {
 
   const logout = async () => {
    try {
-    const {data} = await api.get('/api/seller/logout')
+    const {data} = await api.post('/api/seller/logout')
     if(data.success){
       toast.success(data.message);
+      setisseller(false);
       navigate('/')
     }else{
       toast.error(data.message)

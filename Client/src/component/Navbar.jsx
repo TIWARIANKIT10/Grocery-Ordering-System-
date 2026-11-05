@@ -7,17 +7,20 @@ import toast from 'react-hot-toast'
 
 function Navbar ()  {
      const [open, setOpen] = React.useState(false)
-     const {User, setUser,api, setShowUserLogin,searchQuery, setSearchQuery,getCartCount} = userAppContext();
+     const {User, setUser,api, setShowUserLogin,searchQuery, setSearchQuery,getCartCount, setCardItem} = userAppContext();
+     const [accountOpen, setAccountOpen] = React.useState(false)
 
      const navigate = useNavigate();
      const location = useLocation();
 
      const logout = async ()=>{
         try {
-            const {data} = await api.get('/api/user/logout')
+            const {data} = await api.post('/api/user/logout')
             if(data.success){
                 toast.success("Logout Sucess")
                  setUser(null);
+                 setCardItem({});
+                 setAccountOpen(false);
                       navigate('/')
             }
             else{
@@ -44,7 +47,7 @@ function Navbar ()  {
      },[open ])
 
      useEffect(()=>{
-        if(searchQuery && searchQuery.length >0){
+        if(searchQuery && searchQuery.length >0 && (location.pathname === "/" || location.pathname === "/products")){
             navigate("/products")
         }
      },[searchQuery])
@@ -83,16 +86,18 @@ function Navbar ()  {
                     <button onClick={()=>{setShowUserLogin(true)}} className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition text-white rounded-full">
                     Login
                 </button>):
-                (<div className='relative group '>
-                    <img src={assets.profile_icon} alt="" className='w-10' />
-                    <ul className='hidden group-hover:block absolute top-10 right-0 bg-white shadow border border-gray-200 py-2.5 w-30 rounded-md text-sm z-40'>
-                        <li onClick={()=>{
-                            navigate("my-order")
-                        }}
-                        className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>My Order</li>
-                        <li  onClick={logout}
-                        className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>Logout</li>
+                (<div className='relative'>
+                    <button type="button" aria-label="Account menu" aria-expanded={accountOpen} onClick={()=>setAccountOpen((v)=>!v)} className='block rounded-full cursor-pointer'>
+                        <img src={assets.profile_icon} alt="" className='w-10' />
+                    </button>
+                    {accountOpen && (
+                    <ul className='absolute top-12 right-0 bg-white shadow border border-gray-200 py-2.5 w-36 rounded-md text-sm z-40'>
+                        <li><button type="button" onClick={()=>{ setAccountOpen(false); navigate("my-order") }}
+                        className='w-full text-left p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>My Order</button></li>
+                        <li><button type="button" onClick={logout}
+                        className='w-full text-left p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>Logout</button></li>
                     </ul>
+                    )}
 
                 </div>)}
             </div>

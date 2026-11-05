@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 const authSeller = async (req, res, next) => {
   const { sellertoken } = req.cookies;
 
   if (!sellertoken) {
-    return res.json({ success: false, message: 'Not Authorized' });
+    return res.status(401).json({ success: false, message: "Not Authorized" });
   }
 
   try {
@@ -12,10 +12,10 @@ const authSeller = async (req, res, next) => {
     if (tokenDecode.email === process.env.SELLER_EMAIL) {
       next();
     } else {
-      return res.json({ success: false, message: 'Not Authorized' });
+      return res.status(401).json({ success: false, message: "Not Authorized" });
     }
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    return res.status(401).json({ success: false, message: "Not Authorized" });
   }
 };
 

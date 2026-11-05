@@ -42,7 +42,7 @@ const ProductList = () => {
                                         <div className="border border-gray-300 rounded p-2">
                                             <img src={product.image[0]} alt="Product" className="w-16" />
                                         </div>
-                                        <span className="truncate max-sm:hidden w-full">{product.name}</span>
+                                        <span className="truncate  w-full">{product.name}</span>
                                     </td>
                                     <td className="px-4 py-3">{product.category}</td>
                                     <td className="px-4 py-3">{currency}{product.offerPrice}</td>

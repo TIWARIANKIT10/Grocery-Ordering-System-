@@ -50,8 +50,8 @@ const count = (cardItems && cardItems[product._id]) || 0;
         </div>
         <div className="flex items-end justify-between mt-3">
           <p className="md:text-xl text-base font-medium text-primary leading-tight">
-            {currency} ${product.offerPrice}{" "}
-            <span className="text-gray-500/60 md:text-sm text-xs line-through">${product.price}</span>
+            {currency}{product.offerPrice}{" "}
+            <span className="text-gray-500/60 md:text-sm text-xs line-through">{currency}{product.price}</span>
           </p>
           <div  onClick= {(e)=>{
             e.stopPropagation();
@@ -59,14 +59,14 @@ const count = (cardItems && cardItems[product._id]) || 0;
           }} className="text-primary">
             {!cardItems?.[product._id] ?(
               <button
-                className="flex items-center justify-center gap-1 bg-primary/10 border border-primary/40 md:w-[80px] w-[64px] h-[34px] rounded text-primary "
+                className="flex items-center justify-center gap-1 bg-primary/10 border border-primary/40 md:w-[88px] w-[76px] h-11 rounded text-primary "
                 onClick={()=>{addToCard(product._id)}}
               >
                 <img src={assets.cart_icon} alt="cart_icon" />
                 Add
               </button>
             ) : (
-              <div className="flex items-center justify-center gap-2 md:w-20 w-16 h-[34px] bg-primary/25 rounded select-none">
+              <div className="flex items-center justify-center gap-2 md:w-24 w-20 h-11 bg-primary/25 rounded select-none">
                 <button onClick={handleDecrement} className="cursor-pointer text-md px-2 h-full">-</button>
                 <span className="w-5 text-center">{count}</span>
                 <button onClick={handleIncrement} className="cursor-pointer text-md px-2 h-full">+</button>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { userAppContext } from "../context/AppContext.jsx";
-import { assets, dummyAddress } from "../assets/assets";
+import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
 
 
@@ -13,7 +13,7 @@ const Cart = () => {
     getCartCount,
     updateCardItem,
     navigate,
-    getCartAmount, User , setCardItem,api
+    getCartAmount, User , setCardItem,api, setShowUserLogin
   } = userAppContext();
 
   const [cartArray, setCartArray] = useState([]);
@@ -21,6 +21,7 @@ const Cart = () => {
   const [showAddress, setShowAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState("COD");
+  const [placing, setPlacing] = useState(false);
 const getCart = () => {
   if (!products || !cardItems) return; // Defensive check
 
@@ -56,10 +57,23 @@ const getCart = () => {
     }
   },[User])
 const placeOrder = async () => {
+  // Guards the old version lacked: it dereferenced User._id
+  // while logged out (TypeError dressed as a toast), happily
+  // posted empty orders, and never disabled the button, so
+  // a double-tap created duplicate COD orders.
+  if (placing) return;
+  if (!User) {
+    setShowUserLogin(true);
+    return toast.error("Please log in to place an order");
+  }
+  if (cartArray.length === 0) {
+    return toast.error("Your cart is empty");
+  }
   try {
     if (!selectedAddress) {
       return toast.error("Please select an address");
     }
+    setPlacing(true);
 if(paymentOption=="COD"){
     const orderData = {
       userId: User._id,
@@ -94,10 +108,10 @@ if(paymentOption=="COD"){
     const { data } = await api.post('/api/order/stripe', orderData);
 
     if (data.success) {
+     // Hand the browser to Stripe and STOP — the old code
+     // also called navigate('/my-order'), which raced and
+     // could abort the external redirect.
      window.location.replace(data.url)
-      navigate('/my-order')
-      
-      // You can also navigate or clear cart here if needed
     } else {
       toast.error(data.message || "Failed to place order");
     }}
@@ -109,8 +123,9 @@ if(paymentOption=="COD"){
     }
 
    catch (error) {
-    console.error(error);
     toast.error(error.message || "Something went wrong");
+  } finally {
+    setPlacing(false);
   }
 };
 
@@ -120,6 +135,23 @@ if(paymentOption=="COD"){
       getCart();
     }
   }, [products,cardItems]);
+
+  if (products.length === 0) {
+    return (
+      <div className="mt-16 text-center text-gray-500">
+        <p className="text-lg font-medium text-gray-700">Loading your cart…</p>
+        <p className="mt-1 text-sm">If this stays blank, the shop connection failed — please refresh.</p>
+      </div>
+    );
+  }
+  if (Object.keys(cardItems || {}).length === 0) {
+    return (
+      <div className="mt-16 text-center text-gray-500">
+        <p className="text-lg font-medium text-gray-700">Your cart is empty</p>
+        <button onClick={() => navigate("/products")} className="mt-4 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white">Browse products</button>
+      </div>
+    );
+  }
 
   return products.length > 0 &&cardItems ? (
     <div className="flex flex-col lg:flex-row gap-8 mt-10 md:mt-16">
@@ -136,8 +168,8 @@ if(paymentOption=="COD"){
           <p className="text-center">Action</p>
         </div>
 
-        {cartArray.map((product, index) => (
-          <div key={index} className="pt-3 border-b border-gray-200 pb-3">
+        {cartArray.map((product) => (
+          <div key={product._id} className="pt-3 border-b border-gray-200 pb-3">
             <div className="hidden md:grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium">
               <div className="flex items-center md:gap-6 gap-3">
                 <div
@@ -293,9 +325,9 @@ if(paymentOption=="COD"){
             </button>
             {showAddress && (
               <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                {addresses.map((address, index) => (
+                {addresses.map((address) => (
                   <p
-                    key={index}
+                    key={address._id}
                     onClick={() => {
                       setSelectedAddress(address);
                       setShowAddress(false);
@@ -332,7 +364,7 @@ if(paymentOption=="COD"){
         <div className="text-gray-500 mt-4 space-y-2">
           <p className="flex justify-between">
             <span>Price</span>
-            <span>${getCartAmount()}</span>
+            <span>{currency}{getCartAmount()}</span>
           </p>
           <p className="flex justify-between">
             <span>Shipping Fee</span>
@@ -340,21 +372,22 @@ if(paymentOption=="COD"){
           </p>
           <p className="flex justify-between">
             <span>Tax (2%)</span>
-            <span>${(getCartAmount() * 2) / 100}</span>
+            <span>{currency}{(getCartAmount() * 2) / 100}</span>
           </p>
           <p className="flex justify-between text-lg font-medium mt-3">
             <span>Total Amount:</span>
             <span>
-              ${getCartAmount() + (getCartAmount() * 2) / 100}
+              {currency}{getCartAmount() + (getCartAmount() * 2) / 100}
             </span>
           </p>
         </div>
 
         <button
           onClick={placeOrder}
-          className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition"
+          disabled={placing}
+          className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition disabled:opacity-60"
         >
-          {paymentOption === "COD" ? "Place Order" : "Proceed To Checkout"}
+          {placing ? "Placing…" : paymentOption === "COD" ? "Place Order" : "Proceed To Checkout"}
         </button>
       </div>
     </div>

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { assets, dummyOrders } from "../assets/assets";
+import toast from "react-hot-toast";
+
+// Inline placeholder — the previous fallback, assets.no_image,
+// does not exist in assets.js, so broken images fell back to undefined.
+const NO_IMAGE = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#e5e7eb"/><text x="32" y="36" font-size="10" text-anchor="middle" fill="#6b7280">No image</text></svg>');
 import { Link } from "react-router-dom";
 import { userAppContext } from "../context/AppContext.jsx";
 
@@ -9,7 +13,6 @@ const MyOrder = () => {
   const fetchMyOrder = async ()=> { 
     try {
       const { data} = await api.get('/api/order/user')
-      console.log(data )
 
       
       if(data.success){
@@ -18,8 +21,7 @@ const MyOrder = () => {
       }
       
     } catch (error) {
-      console.log(error)
-      
+      toast.error("Could not load your orders")
     }
   
   }
@@ -33,9 +35,12 @@ const MyOrder = () => {
         MY ORDERS
       </h1>
 
-      {myOrders.map((order, index) => (
+      {myOrders.length === 0 && (
+        <p className="text-gray-500">No orders yet — when you place an order it will show up here.</p>
+      )}
+      {myOrders.map((order) => (
         <div
-          key={index}
+          key={order._id}
           className="border border-gray-300 rounded-lg p-3 md:p-4 mb-6 shadow-sm w-full"
         > 
           <p className="flex justify-between md:items-center text-gray-400 md:font-medium max-md:flex-col gap-1">
@@ -53,7 +58,7 @@ const MyOrder = () => {
               <div className="flex items-center mb-4 md:mb-0">
                 <div className="bg-primary/10 p-4 rounded-lg">
                   <img
-                    src={item?.product?.image?.[0] || assets.no_image}
+                    src={item?.product?.image?.[0] || NO_IMAGE}
                     alt=""
                     className="w-16 h-16"
                   />

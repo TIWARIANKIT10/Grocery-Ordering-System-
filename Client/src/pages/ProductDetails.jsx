@@ -24,14 +24,14 @@ const ProductDetails = () => {
     setThumbnail(product?.image?.[0] ?? null);
   }, [product]);
 
-  if (!product) return <p className="mt-16 text-center text-gray-500">Product not found</p>;
+  if (!product) return <p className="mt-16 text-center text-gray-500">{products.length === 0 ? "Loading…" : "Product not found"}</p>;
 
   return (
     <div className="mt-16">
       <p className="text-sm md:text-base break-words">
         <Link to="/">Home</Link> /{" "}
         <Link to="/products">Products</Link> /{" "}
-        <Link to={`/products/${product.category.toLowerCase()}`}>{product.category}</Link> /{" "}
+        <Link to={`/product/${product.category.toLowerCase()}`}>{product.category}</Link> /{" "}
         <span className="text-indigo-500">{product.name}</span>
       </p>
 
@@ -79,7 +79,7 @@ const ProductDetails = () => {
 
           <p className="text-base font-medium mt-6">About Product</p>
           <ul className="list-disc ml-4 text-gray-500/70">
-            {product.description.map((desc, index) => (
+            {(Array.isArray(product.description) ? product.description : [product.description]).map((desc, index) => (
               <li key={index}>{desc}</li>
             ))}
           </ul>

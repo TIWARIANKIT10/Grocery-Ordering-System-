@@ -64,13 +64,13 @@ import toast from 'react-hot-toast';
     
     <button 
         type="submit" 
-        className="w-full bg-primary text-white py-2 rounded hover:bg-primary-dark transition-colors"
+        className="w-full bg-primary text-white py-2 rounded hover:bg-primary-dull transition-colors"
     >
         Login
     </button>
     
     <p className="text-sm text-gray-600 m-auto">
-        Don't have an account? <a href="#" className="text-primary hover:underline">Sign up</a>
+        Seller access is issued by the store owner — there is no public sign-up.
     </p>
 </div>
 

@@ -1,27 +1,24 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
+const authUser = async (req, res, next) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json({ success: false, message: "Not Authorized" });
+  }
 
-const authUser = async (req, res, next)=>{
-    const {token} =  req.cookies;
-    if(!token){
-        return res.json({sucess:false,message:'NOt Authorized  '});
+  try {
+    const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+    if (tokenDecode.id) {
+      req.body = req.body || {};
+      req.body.userId = tokenDecode.id;
+      req.user = { _id: tokenDecode.id };
+      next();
+    } else {
+      return res.status(401).json({ success: false, message: "Not Authorized" });
     }
-
-    try {
-        const tokenDecode = jwt.verify(token,process.env.JWT_SECRET)
-        if(tokenDecode.id){
-             req.body = req.body || {};
-            req.body.userId = tokenDecode.id ; 
-            req.user = { _id: tokenDecode.id };
-            next();
-        }else{
-            return res.json({sucess:false, message:'NOt Authorized'});
-        }
-        
-    } catch (error) {
-        res.json({sucess:false,message:error.message+"hellow"});
-        
-    }
-
-}
-export default authUser ; 
+  } catch (error) {
+    // Never leak the raw JWT error to clients.
+    return res.status(401).json({ success: false, message: "Not Authorized" });
+  }
+};
+export default authUser;

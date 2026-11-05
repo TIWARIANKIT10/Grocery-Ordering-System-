@@ -29,7 +29,7 @@ const ProductCategory = () => {
         {filteredProducts
           .filter((product) => product.inStock)
           .map((product, index) => (
-            <ProductCard key={index} product={product} />
+            <ProductCard key={product._id} product={product} />
           ))}
       </div>
     </div>

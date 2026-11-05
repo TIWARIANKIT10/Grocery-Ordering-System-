@@ -6,7 +6,15 @@ const Login = () => {
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const {setShowUserLogin, setUser,axios,navigate,api} = userAppContext()
+    const {setShowUserLogin, setUser, navigate, api, setCardItem} = userAppContext()
+
+    // Close on Escape, like every other modal on the site.
+    React.useEffect(() => {
+        const onKey = (e) => { if (e.key === "Escape") setShowUserLogin(false); };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [setShowUserLogin]);
+
     const onSubmitHandler = async (event)=>{
         try {
             event.preventDefault();
@@ -14,21 +22,18 @@ const Login = () => {
             if(data.success){
                 navigate('/')
                 setUser(data.user)
-                  setShowUserLogin(false)
-
+                // Restore the account's saved cart. Without
+                // this the cart-sync effect immediately POSTs
+                // the (empty) guest cart over the server's.
+                setCardItem(data.user.cartItems || {})
+                setShowUserLogin(false)
             }
             else{
                 toast.error(data.message)
             }
-
-       
-      
-            
         } catch (error) {
             toast.error(error.message)
-            
         }
-        
     }
 
     return (
@@ -40,28 +45,28 @@ const Login = () => {
             </p>
             {state === "register" && (
                 <div className="w-full">
-                    <p>Name</p>
-                    <input onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="text" required />
+                    <label htmlFor="login-name">Name</label>
+                    <input id="login-name" autoComplete="name" onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="text" required />
                 </div>
             )}
             <div className="w-full ">
-                <p>Email</p>
-                <input onChange={(e) => setEmail(e.target.value)} value={email} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="email" required />
+                <label htmlFor="login-email">Email</label>
+                <input id="login-email" autoComplete="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="email" required />
             </div>
             <div className="w-full ">
-                <p>Password</p>
-                <input onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="password" required />
+                <label htmlFor="login-password">Password</label>
+                <input id="login-password" autoComplete={state === "login" ? "current-password" : "new-password"} minLength={state === "register" ? 8 : undefined} onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="password" required />
             </div>
             {state === "register" ? (
                 <p>
-                    Already have account? <span onClick={() => setState("login")} className="text-primary cursor-pointer">click here</span>
+                    Already have account? <button type="button" onClick={() => setState("login")} className="text-primary cursor-pointer">click here</button>
                 </p>
             ) : (
                 <p>
-                    Create an account? <span onClick={() => setState("register")} className="text-primary cursor-pointer">click here</span>
+                    Create an account? <button type="button" onClick={() => setState("register")} className="text-primary cursor-pointer">click here</button>
                 </p>
             )}
-            <button className="bg-primary hover:bg-primary-600 transition-all text-white w-full py-2 rounded-md cursor-pointer">
+            <button className="bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-md cursor-pointer">
                 {state === "register" ? "Create Account" : "Login"}
             </button>
         </form>

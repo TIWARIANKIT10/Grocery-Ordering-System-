@@ -149,34 +149,25 @@ export const footerLinks = [
   {
     title: "Quick Links",
     links: [
-      { text: "Home", url: "#" },
-      { text: "Best Sellers", url: "#" },
-      { text: "Offers & Deals", url: "#" },
-      { text: "Contact Us", url: "#" },
-      { text: "FAQs", url: "#" },
+      { text: "Home", url: "/" },
+      { text: "All Products", url: "/products" },
+      { text: "My Cart", url: "/cart" },
+      { text: "Contact Us", url: "#contact" },
     ],
   },
   {
     title: "Need help?",
     links: [
-      { text: "Delivery Information", url: "#" },
-      { text: "Return & Refund Policy", url: "#" },
-      { text: "Payment Methods", url: "#" },
-      { text: "Track your Order", url: "#" },
-      { text: "Contact Us", url: "#" },
-    ],
-  },
-  {
-    title: "Follow Us",
-    links: [
-      { text: "Instagram", url: "#" },
-      { text: "Twitter", url: "#" },
-      { text: "Facebook", url: "#" },
-      { text: "YouTube", url: "#" },
+      { text: "Track your Order", url: "/my-order" },
+      { text: "My Orders", url: "/my-order" },
+      { text: "Contact Us", url: "#contact" },
     ],
   },
 ];
 
+// Entries that pointed nowhere (Offers, FAQs, socials with
+// no real profiles) were removed — every footer link now
+// lands somewhere real.
 export const features = [
   {
     icon: delivery_truck_icon,

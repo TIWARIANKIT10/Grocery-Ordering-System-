@@ -18,7 +18,7 @@ const InputField = ({ type, placeholder, name, handleChange, value }) => (
 );
 
 const AddAddress = () => {
-  const {axios ,User, navigate,api} = userAppContext()
+  const {User, navigate, api, authLoading} = userAppContext()
   const [address, setAddress] = useState({
     firstName: '',
     lastName: '',
@@ -41,7 +41,6 @@ const AddAddress = () => {
   try {
    
     const {data} = await api.post('/api/address/add',{address})
-console.log(data);
     if(data.success){
       toast.success(data.message)
       navigate('/cart')
@@ -54,9 +53,12 @@ console.log(data);
     
   }
   };
-  useEffect(()=>{if(!User){
+  // Wait for the first is-auth answer: User starts as
+  // `false`, so the old mount-once guard bounced even
+  // signed-in users to /cart on refresh/direct load.
+  useEffect(()=>{if(!authLoading && !User){
     navigate('/cart')
-  }},[])
+  }},[authLoading, User])
 
   return (
     <div className='mt-16 pb-16'>

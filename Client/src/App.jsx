@@ -21,7 +21,7 @@ import Orders from './pages/seller/Orders';
 
 // App.jsx
 function App() {
-    const isSellerPath = useLocation().pathname.includes("seller");
+    const isSellerPath = useLocation().pathname.startsWith("/seller");
     const{showUserLogin,isSeller} = userAppContext()
   return (
     <div className='text-default min-h-screen text-gray-700 bg-white overflow-x-hidden'>

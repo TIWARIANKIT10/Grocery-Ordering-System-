@@ -12,7 +12,7 @@ const Categories = () => {
           <div key={index} className='group cursor-pointer py-5 px-3 gap-2 rounded-lg flex flex-col justify-center items-center' style={{backgroundColor: category.bgColor}} onClick={() => {
              navigate(`/product/${category.path.toLowerCase()}`)
           }}>
-            <img src={category.image} alt={category.text} className='group-hover:scale-110 transition max-w-28'/>
+            <img loading="lazy" src={category.image} alt={category.text} className='group-hover:scale-110 transition max-w-28'/>
             <p className='text-sm font-medium'>{category.text}</p>
           </div>
         ))}
